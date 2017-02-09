@@ -4,8 +4,9 @@ import { Link } from 'react-router';
 class App extends Component {
   render() {
     return(
-      <div>
-        {this.props.children}
+      <div className="test">
+        <h1>Hello World 2</h1>
+        <Link to="/" className="btn btn-danger">Test</Link>
       </div>
     );
   }

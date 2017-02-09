@@ -1,11 +1,12 @@
 {
   "manifest_version": 2,
+
   "name": "MAL Assist",
   "description": "Automatic assistant for managing anime on MAL",
   "version": "0.1",
   "background": {
     "scripts": [
-      "background.bundle.js"
+      "./reducers/index.js"
     ],
     "persistent": true
   },

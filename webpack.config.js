@@ -1,10 +1,17 @@
 const path = require('path');
+var ChromeDevPlugin = require("chrome-dev-webpack-plugin");
+
+var sourcePath = path.join(__dirname, "src");
 
 const config = {
-  entry: './src/index.js',
+  context: path.resolve(sourcePath),
+  entry: {
+    entry: [path.join(sourcePath, "/index.js")],
+    background: [path.join(sourcePath, "/reducers/index.js")]
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
   },
   module: {
     rules: [
@@ -13,7 +20,11 @@ const config = {
         test: /\.js$/
       }
     ]
-  }
+  },
+  plugins: [
+    new ChromeDevPlugin({
+    entry: "./manifest.json"
+  })]
 }
 
 module.exports = config;

@@ -1,2 +1,4 @@
 /node_modules
-bundle.js
+/build/background.bundle.js
+/build/entry.bundle.js
+/build/manifest.json
