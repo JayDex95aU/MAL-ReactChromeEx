@@ -13,6 +13,7 @@ const config = {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.js',
   },
+  watch: true,
   module: {
     rules: [
       {
