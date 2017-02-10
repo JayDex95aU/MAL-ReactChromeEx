@@ -1,16 +1,15 @@
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, createStore, dispatch } from 'redux';
 import { wrapStore } from 'react-chrome-redux';
+import { connect } from 'react-redux'
 
-import TestReducer from './reducer_test';
+import SuggestionsReducer from './reducer_suggestions';
+import { fetchSuggestions } from '../actions/index';
 
 const rootReducer = combineReducers({
-  post: TestReducer
+  suggestion: SuggestionsReducer
 });
 
 const store = createStore(rootReducer);
-console.log("Hello World I am running");
-
-
 wrapStore(store, {portName: 'MY_APP'});
 
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
@@ -18,5 +17,6 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
   const url = tab.url;
   if (url !== undefined && changeinfo.status == "complete") {
     console.log("Background updated");
+    store.dispatch(fetchSuggestions('Bye'));
   }
 });
