@@ -14,10 +14,11 @@ class SuggestAssist extends Component {
   }
 
   render() {
-    console.log(this.props.suggestion);
+
     return(
       <div className="test">
         <h1>Hello World "New WEB"</h1>
+        <button onClick={() => {console.log(this.props.suggestion)}} className="btn btn-danger">SAVE</button>
       </div>
     );
   }
@@ -27,4 +28,8 @@ function mapStateToProps(state) {
   return { suggestion: state.suggestion };
 }
 
-export default connect(mapStateToProps)(SuggestAssist);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators( {} , dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SuggestAssist);

@@ -4,7 +4,7 @@ export const FETCH_SUGGESTION = 'FETCH_SUGGESTION';
 
 export function fetchSuggestions(text) {
   return {
-    type: 'ADD_TODO',
-    text
+    type: FETCH_SUGGESTION,
+    payload: text
   };
 }
