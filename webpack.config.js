@@ -12,6 +12,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.js',
+    publicPath: 'build/'
   },
   watch: true,
   module: {
@@ -19,6 +20,16 @@ const config = {
       {
         use: 'babel-loader',
         test: /\.js$/
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: { limit: 40000 }
+          },
+          'image-webpack-loader'
+        ]
       }
     ]
   },

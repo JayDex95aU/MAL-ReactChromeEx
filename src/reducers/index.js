@@ -19,7 +19,7 @@ wrapStore(store, {portName: 'MAL'});
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
   const url = tab.url;
   if (url !== undefined && changeinfo.status == "complete") {
-    console.log("Tab listener fired");
-    store.dispatch(testMAL());
+    // console.log("Tab listener fired");
+    // store.dispatch(testMAL());
   }
 });

@@ -18,8 +18,8 @@ export function testMAL(username, password, query) {
     method: 'get',
     url: `${ROOT_URL}/anime/search.xml?q=bleach`,
     auth: {
-      username: 'JayDex',
-      password: '95life95aU'
+      username: username,
+      password: password
     },
   });
 
