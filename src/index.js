@@ -2,10 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Store } from 'react-chrome-redux';
-
 import { Router, createMemoryHistory } from 'react-router';
 
-import reducers from './reducers';
 import routes from './routes';
 
 const history = createMemoryHistory(location)
