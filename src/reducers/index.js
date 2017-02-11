@@ -10,9 +10,10 @@ const rootReducer = combineReducers({
   suggestion: SuggestionsReducer
 });
 
-const store = createStore(rootReducer, applyMiddleware(alias(promiseMiddleware)));
 
-wrapStore(store, {portName: 'MY_APP'});
+const store = createStore(rootReducer, applyMiddleware(promiseMiddleware));
+
+wrapStore(store, {portName: 'MAL'});
 
 // Chrome listeners for background events
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {

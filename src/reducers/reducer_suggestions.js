@@ -6,11 +6,9 @@ export default function(state = INITAL_STATE, action) {
     case FETCH_SUGGESTION:
       return [ action.payload, ...state ];
     case TAB_SUGGESTION:
+      console.log(action);
       console.log("TAB SUGGESTION FIRED:");
-      action.payload.then((data) => {
-        console.log(data);
-        return state;
-      });
+      return state;
     default:
       return state;
   }

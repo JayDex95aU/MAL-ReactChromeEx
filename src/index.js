@@ -9,7 +9,7 @@ import routes from './routes';
 const history = createMemoryHistory(location)
 
 const store = new Store({
-  portName: 'MY_APP'
+  portName: 'MAL'
 });
 
 chrome.extension.getBackgroundPage();
