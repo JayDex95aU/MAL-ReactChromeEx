@@ -4,10 +4,24 @@ import x2js from 'x2js';
 const INITAL_STATE = [];
 
 export default function(state = INITAL_STATE, action) {
+  var preventAdd = false;
+
   switch(action.type) {
     case TAB_SUGGESTION:
-      console.log(action.payload.data.categories[0].items);
-      return [ action.payload, ...state ];
+      const animeInfo = action.payload.data.categories[0].items[0];
+      state.map((value) => {
+        if (value.id == animeInfo.id) {
+          console.log("Anime in state");
+          preventAdd = true;
+        }
+      })
+
+      if (preventAdd) {
+        return state;
+      }
+    
+      console.log("Anime not in state");
+      return [ animeInfo, ...state ];
     default:
       return state;
   }

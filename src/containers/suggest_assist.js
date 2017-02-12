@@ -10,15 +10,25 @@ class SuggestAssist extends Component {
 
 
 
-  renderSuggestionsMapper() {
-    // Map a list of anime suggestions to an object
+  renderSuggestionsMapper(data) {
+    return(
+      <tr key={data.id}>
+        <p>{data.id}</p>
+      </tr>
+    );
   }
 
 
   render() {
     return(
       <div className="test">
-        <h6>Suggestion list goes here</h6>
+        <table className="table">
+
+        <tbody>
+            {this.props.suggestion.map(this.renderSuggestionsMapper)}
+        </tbody>
+
+        </table>
       </div>
     );
   }

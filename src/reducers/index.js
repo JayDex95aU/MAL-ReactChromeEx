@@ -22,12 +22,8 @@ wrapStore(store, {portName: 'MAL'});
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
   const url = tab.url;
   if (url !== undefined && changeinfo.status == "complete") {
-    
-      console.log("Tab listener fired");
-      const pattern = new UrlPattern('(http(s)\\://)(:subdomain.):domain.:tld(\\::port)(/:1)(/:2)(/:3)(/:4)(/*)');
-      console.log(pattern.match(tab.url));
-      store.dispatch(searchMAL());
-    // console.log("Tab listener fired");
-    // store.dispatch(testMAL());
+      const pattern = new UrlPattern('(http(s)\\://)(:subdomain.):domain.:tld(\\::port)(/:one)(/:two)(/:three)(/:four)(/*)');
+      const urlSplit = pattern.match(tab.url);
+      store.dispatch(searchMAL(urlSplit));
   }
 });
