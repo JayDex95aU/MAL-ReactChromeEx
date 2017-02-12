@@ -7,7 +7,7 @@ import Login from './components/login';
 
 export default (
   <Route path='/' component={App}>
-    <IndexRoute component={Login} />
-    <Route path='suggest' component={SuggestAssist} />
+    <IndexRoute component={SuggestAssist} />
+    <Route path='login' component={Login} />
   </Route>
 );

@@ -12,3 +12,8 @@
   font-size: 8px;
   text-align: center;
 }
+
+.login_cancelbutton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

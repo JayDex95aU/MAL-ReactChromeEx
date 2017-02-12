@@ -2,17 +2,14 @@ import axios from 'axios';
 
 export const TAB_SUGGESTION = 'TAB_SUGGESTION';
 
-const ROOT_URL = "https://myanimelist.net/api"
+const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword="
 
 // Username & Password static for the time being
-export function testMAL(query) {
+export function searchMAL(query) {
+  const query2 = "Battle-Spirits-Double-Drive"
   const request = axios({
     method: 'get',
-    url: `${ROOT_URL}/anime/search.xml?q=bleach`,
-    auth: {
-      username: username,
-      password: password
-    },
+    url: `${SEARCH_URL}${query2}`
   });
 
   return {
