@@ -56,7 +56,7 @@ class App extends Component {
           </div>
         </header>
 
-        <main className="container">{this.props.children}</main>
+        <main>{this.props.children}</main>
 
       </div>
     );

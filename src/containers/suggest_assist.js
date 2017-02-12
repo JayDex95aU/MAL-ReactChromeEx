@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import ReactScrollbar from 'react-scrollbar-js';
+
 class SuggestAssist extends Component {
   constructor(props) {
     super(props);
@@ -11,25 +13,41 @@ class SuggestAssist extends Component {
 
 
   renderSuggestionsMapper(data) {
+    //data.image_url data.name
     return(
-      <tr key={data.id}>
-        <p>{data.id}</p>
-      </tr>
+
+      <li>
+        <div className="divider divider-magin"/>
+        <div className="row">
+          <img className="col s3 suggestion_list" src={data.image_url} />
+          <p className="col s5 paragraph_style">{data.name}</p>
+          <div className="col s4">
+            <a className="btn">YES</a>
+            <a className="btn red">_NO</a>
+          </div>
+        </div>
+
+      </li>
     );
   }
 
 
+
   render() {
+    const myScrollbar = {
+      width: 275,
+      height: 398,
+    };
+
+    console.log(this.props.suggestion);
+
     return(
-      <div className="test">
-        <table className="table">
-
-        <tbody>
-            {this.props.suggestion.map(this.renderSuggestionsMapper)}
-        </tbody>
-
-        </table>
-      </div>
+      <ReactScrollbar style={myScrollbar}>
+        <h6>Did you watch?</h6>
+        <ul>
+          {this.props.suggestion.map(this.renderSuggestionsMapper)}
+        </ul>
+      </ReactScrollbar>
     );
   }
 }
