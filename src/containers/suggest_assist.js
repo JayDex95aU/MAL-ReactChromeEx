@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -6,10 +6,21 @@ import { bindActionCreators } from 'redux';
 class SuggestAssist extends Component {
   constructor(props) {
     super(props);
+    this.logoutHelper = this.logoutHelper.bind(this);
   }
 
-  renderSuggestions() {
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
+  renderSuggestionsMapper() {
     // Map a list of anime suggestions to an object
+  }
+
+  logoutHelper() {
+    chrome.storage.local.set({'username_MAL_95au': ''});
+    chrome.storage.local.set({'password_MAL_95au': ''});
+    this.context.router.push('/');
   }
 
   render() {
@@ -17,6 +28,7 @@ class SuggestAssist extends Component {
     return(
       <div className="test">
         <h1>Hello World</h1>
+        <button onClick={this.logoutHelper} className="btn">Logout</button>
       </div>
     );
   }

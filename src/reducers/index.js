@@ -5,9 +5,11 @@ import promiseMiddleware from 'redux-promise';
 
 import SuggestionsReducer from './reducer_suggestions';
 import { fetchSuggestions, testMAL } from '../actions/index';
+import { reducer as formReducer } from 'redux-form'
 
 const rootReducer = combineReducers({
-  suggestion: SuggestionsReducer
+  suggestion: SuggestionsReducer,
+  form: formReducer
 });
 
 
@@ -19,6 +21,12 @@ wrapStore(store, {portName: 'MAL'});
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
   const url = tab.url;
   if (url !== undefined && changeinfo.status == "complete") {
+    chrome.storage.local.get('username_MAL_95au', (data) => {
+      if (data.username_MAL_95au != '') {
+        console.log("Tab listener fired");
+        console.log(tab.url);
+      }
+    });
     // console.log("Tab listener fired");
     // store.dispatch(testMAL());
   }
