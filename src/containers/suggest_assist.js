@@ -11,6 +11,8 @@ import ReactScrollbar from 'react-scrollbar-js';
 class SuggestAssist extends Component {
   constructor(props) {
     super(props);
+
+    this.state = { clear: false };
   }
 
   animeHelper(data) {
@@ -19,7 +21,31 @@ class SuggestAssist extends Component {
 
 
   renderSuggestionsMapper(data) {
-    return(<div><h2>{data.name}</h2></div>);
+    return(
+      <div className="container ui card cardCentering">
+        <div className="content">
+          <img className="right floated mini ui image" src={data.image_url}/>
+          <div class="header">
+            {data.name}
+          </div>
+          <div className="meta">
+            {data.payload.status} | <i className="star icon"></i>
+            {data.payload.score}
+          </div>
+
+          <div className="description">
+            Episode Watched: 8
+          </div>
+
+        </div>
+        <div className="extra content">
+          <div className="ui two buttons">
+            <div className="ui basic green button">Add</div>
+            <div className="ui basic red button">Ignore</div>
+          </div>
+        </div>
+      </div>
+    );
     //data.image_url data.name
     // return(
     //   {data.name}
@@ -52,15 +78,29 @@ class SuggestAssist extends Component {
     });
   }
 
+  clearHelper() {
+    if (this.state.clear) {
+      return(
+        <div className="ui active inverted dimmer">
+          <div className="ui indeterminate text loader">Clearing</div>
+        </div>
+      );
+    }
+  }
+
   render() {
     const myScrollbar = {
       width: "100%",
       height: 425,
     };
     return(
+    <div>
       <ReactScrollbar style={myScrollbar}>
         {this.props.suggestion.map(this.renderSuggestionsMapper, this)}
       </ReactScrollbar>
+      <div onClick={() => {this.setState({ clear: true })}} className="ui bottom attached button" tabindex="0">Clear All</div>
+      {this.clearHelper()}
+    </div>
     );
   }
 }

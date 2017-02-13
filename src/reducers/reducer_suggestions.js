@@ -9,7 +9,7 @@ export default function(state = INITAL_STATE, action) {
 
   switch(action.type) {
     case TAB_SUGGESTION:
-      const animeInfo = action.payload.data.categories[0].items[0];
+      const animeInfo = animeInfoHelper(action.payload.data);
       state.map((value) => {
         if (value.id == animeInfo.id) {
           console.log("Anime in state");
@@ -20,7 +20,7 @@ export default function(state = INITAL_STATE, action) {
       if (preventAdd) {
         return state;
       }
-
+      console.log(animeInfo);
       console.log("Anime not in state");
       return [ animeInfo, ...state ];
     case ANIME_ADD:
@@ -41,6 +41,18 @@ export default function(state = INITAL_STATE, action) {
     default:
       return state;
   }
+}
+
+/**
+Purpose: Select correct category when JSON data is returned from MAL
+**/
+function animeInfoHelper(data) {
+  var selectionValue = 0;
+  while (data.categories[selectionValue].type != "anime") {
+    selectionValue++;
+  }
+  const animeInfo = data.categories[selectionValue].items[0];
+  return animeInfo;
 }
 
 
