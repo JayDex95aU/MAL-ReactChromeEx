@@ -21,24 +21,20 @@ class App extends Component {
   logRender() {
     chrome.storage.local.get('username_MAL_95au', (data) => {
       if (data.username_MAL_95au != '') {
-        this.setState({ log: 'LOGOUT' });
+        this.setState({ log: 'Logout' });
       } else {
-        this.setState({ log: 'LOGIN' });
+        this.setState({ log: 'Sign-in' });
       }
     });
 
-    if (this.state.log == 'LOGOUT') {
+    if (this.state.log == 'Logout') {
       return (
-        <ul id="nav-mobile" className="right">
-          <li><Link onClick={this.logoutHelper}>{this.state.log}</Link></li>
-        </ul>
+        <Link className="item" onClick={this.logoutHelper}>{this.state.log}</Link>
       );
     }
 
     return (
-      <ul id="nav-mobile" className="right">
-        <li><Link to="login">{this.state.log}</Link></li>
-      </ul>
+      <Link to="login" className="item">{this.state.log}</Link>
     );
   }
 
@@ -46,18 +42,22 @@ class App extends Component {
     return(
       <div>
         <header>
-          <div className="navbar-fixed">
-            <nav>
-              <div className="nav-wrapper indigo">
-                <a className="brand-logo left"><i className="material-icons">cloud</i>MAL</a>
-                {this.logRender()}
-              </div>
-            </nav>
+          <div className="ui top fixed menu">
+            <div className="item">
+              <img src="/img/logo.png" />
+            </div>
+            <div className="right menu">
+              {this.logRender()}
+              <a className="item">
+                <i className="setting icon"></i>
+              </a>
+            </div>
           </div>
         </header>
 
-        <main>{this.props.children}</main>
-
+        <div className="main_headerpadding container">
+          {this.props.children}
+        </div>
       </div>
     );
   }

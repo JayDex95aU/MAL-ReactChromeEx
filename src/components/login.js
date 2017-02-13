@@ -7,6 +7,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.loginHandler = this.loginHandler.bind(this);
+    this.errorHandler = this.errorHandler.bind(this);
     this.state = { spinner: false, login: false };
   }
 
@@ -30,7 +31,6 @@ class Login extends Component {
       chrome.storage.local.set({'password_MAL_95au': props.password});
       this.setState({ spinner: false });
       console.log(data);
-      Materialize.toast(`You have logged in as ${props.username}`, 4000);
       this.context.router.push('/');
     })
     .catch(() => {
@@ -38,63 +38,77 @@ class Login extends Component {
     });
   }
 
-  loadingSpinner() {
-    if (this.state.login) {
-      return (
-        <h6 className="red-text text-darken-2">Credential Incorrect</h6>
-      );
-    }
-    if (!this.state.spinner) {
-      return;
-    }
-    return (
-      <div className="preloader-wrapper small active">
-        <div className="spinner-layer spinner-green-only">
-          <div className="circle-clipper left">
-            <div className="circle"></div>
-          </div><div className="gap-patch">
-            <div className="circle"></div>
-          </div><div className="circle-clipper right">
-            <div className="circle"></div>
+  errorHandler() {
+    if (this.state.login == true) {
+      return(
+        <div className="ui negative message">
+          <div className="header center aligned ui">
+            Credentials Incorrect
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   render() {
-    chrome.storage.local.get('username_MAL_95au', (data) => {
-      if (data.username_MAL_95au != '') {
-        this.context.router.push('/');
-      }
-    });
-    //Warning from react-unknown-props, not a problem since it works but bad practice!
     const { fields: { username, password } , handleSubmit } = this.props;
     return(
-      <div>
-        <h5 className="halign-wrapper center-align landing">Hello there, to add to your list, login to MAL</h5>
-        <div className="row">
-          <form onSubmit={handleSubmit(this.loginHandler)} className="col s12">
-            <div className="input-field col s12">
-              <i className="material-icons prefix">account_circle</i>
-              <input type="text" id="username" className="validate" {...username} />
+      <div className="loginPadding">
+
+        <form onSubmit={handleSubmit(this.loginHandler)} className="ui form">
+          <div className="ui grid field">
+            <div className="three wide column middle aligned">
+              <i className="circular large teal users icon"></i>
+            </div>
+            <div className="twelve wide column">
               <label>Username</label>
+              <input type="text" name="username" placeholder="MAL Username" {...username} />
             </div>
-            <div className="input-field col s12">
-              <i className="material-icons prefix">vpn_key</i>
-              <input type="password" className="validate" {...password} />
+          </div>
+
+          <div className="ui grid field">
+            <div className="three wide column middle aligned">
+              <i className="circular large teal keyboard icon"></i>
+            </div>
+            <div className="twelve wide column">
               <label>Password</label>
+              <input type="password" name="password" placeholder="*******" {...password} />
             </div>
-              <button type="submit" className="btn teal col s6 offset-s3">Submit</button>
-              <Link to="/" className="btn red col s6 offset-s3 login_cancelbutton">Back</Link>
-          </form>
+          </div>
+
+          <div className="ui grid centered">
+
+            <Link to="/" className="ui button red">
+              <i className="angle left icon"></i>
+              Back
+            </Link>
+
+            <button className={`ui button teal ${this.state.spinner ? 'loading' : ''}`} type="submit">
+              <i className="dashboard icon"></i>
+              Sign in
+            </button>
+          </div>
+
+          <br />
+        </form>
+
+        {this.errorHandler()}
+
+        <div className="ui horizontal divider">
+          Or
+        </div>
+        <br />
+        <div className="ui grid centered row">
+
+          <div onClick={() => {
+              chrome.tabs.create({url: "https://myanimelist.net/register.php?from=%2F"});
+            }} className="ui teal labeled icon button">
+            Sign up to MAL
+            <i className="add icon"></i>
+          </div>
 
         </div>
-        <div className="disclaimer">
-          {this.loadingSpinner()}
-          <br />
-          <p>*We do not support OAUTH Sign-in methods</p>
-        </div>
+
       </div>
     );
   }
