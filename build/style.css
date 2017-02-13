@@ -1,6 +1,8 @@
 #container {
   height: 475px;
   width: 325px;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .main_headerpadding {

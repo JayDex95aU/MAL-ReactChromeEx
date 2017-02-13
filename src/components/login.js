@@ -33,8 +33,8 @@ class Login extends Component {
       this.setState({ spinner: false });
 
       noty({
-        text: `Login Successful, Welcome ${props.username}`,
-        layout: 'bottomCenter',
+        text: `<h5>Login</h5><p>Welcome ${props.username}</p>`,
+        layout: 'bottomLeft',
         progressBar: 'true',
         theme: 'relax',
         type: 'information',

@@ -17,8 +17,8 @@ class App extends Component {
     chrome.storage.local.set({'username_MAL_95au': ''});
     chrome.storage.local.set({'password_MAL_95au': ''});
     noty({
-      text: `Logout Successful, Thank you for using AutoMAL`,
-      layout: 'bottomCenter',
+      text: `<h5>Logout</h5><p>Thank you for using AutoMAL</p>`,
+      layout: 'bottomLeft',
       progressBar: 'true',
       theme: 'relax',
       type: 'information',
