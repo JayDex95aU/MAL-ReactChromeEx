@@ -29,7 +29,8 @@ class Login extends Component {
       chrome.storage.local.set({'username_MAL_95au': props.username});
       chrome.storage.local.set({'password_MAL_95au': props.password});
       this.setState({ spinner: false });
-      Materialize.toast('You have logged in', 4000);
+      console.log(data);
+      Materialize.toast(`You have logged in as ${props.username}`, 4000);
       this.context.router.push('/');
     })
     .catch(() => {

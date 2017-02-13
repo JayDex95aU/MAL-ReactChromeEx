@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const TAB_SUGGESTION = 'TAB_SUGGESTION';
 export const BAD_ACTION = 'BAD_ACTION';
+export const ANIME_ADD = 'ANIME_ADD';
 
 const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword="
 
@@ -35,5 +36,12 @@ export function searchMAL(url) {
   return {
     type: TAB_SUGGESTION,
     payload: request
+  }
+}
+
+export function addAnimeToMAL(id) {
+  return {
+    type: ANIME_ADD,
+    payload: id
   }
 }

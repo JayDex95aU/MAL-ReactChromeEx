@@ -1,4 +1,5 @@
-import { TAB_SUGGESTION } from '../actions/index';
+import { TAB_SUGGESTION, ANIME_ADD } from '../actions/index';
+import axios from 'axios';
 import x2js from 'x2js';
 
 const INITAL_STATE = [];
@@ -19,9 +20,24 @@ export default function(state = INITAL_STATE, action) {
       if (preventAdd) {
         return state;
       }
-    
+
       console.log("Anime not in state");
       return [ animeInfo, ...state ];
+    case ANIME_ADD:
+      chrome.storage.local.get({username: 'username_MAL_95au', password: 'password_MAL_95au'}, (object) => {
+        const request = axios({
+          method: 'post',
+          url: `${SEARCH_URL}${query}`,
+          data: {
+            id: action.payload
+          },
+          auth: {
+            username: object.username,
+            password: object.password
+          }
+        });
+      });
+      break;
     default:
       return state;
   }
