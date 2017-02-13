@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import noty from 'noty';
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +16,15 @@ class App extends Component {
   logoutHelper() {
     chrome.storage.local.set({'username_MAL_95au': ''});
     chrome.storage.local.set({'password_MAL_95au': ''});
-    Materialize.toast('You have logged out', 4000);
+    noty({
+      text: `Logout Successful, Thank you for using AutoMAL`,
+      layout: 'bottomCenter',
+      progressBar: 'true',
+      theme: 'relax',
+      type: 'information',
+      timeout: 1500,
+      closeWith: ['hover']
+    });
   }
 
   logRender() {

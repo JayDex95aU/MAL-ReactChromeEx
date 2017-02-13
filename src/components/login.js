@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { reduxForm, reset } from 'redux-form';
 import axios from 'axios';
+import noty from 'noty';
 
 class Login extends Component {
   constructor(props) {
@@ -30,7 +31,17 @@ class Login extends Component {
       chrome.storage.local.set({'username_MAL_95au': props.username});
       chrome.storage.local.set({'password_MAL_95au': props.password});
       this.setState({ spinner: false });
-      console.log(data);
+
+      noty({
+        text: `Login Successful, Welcome ${props.username}`,
+        layout: 'bottomCenter',
+        progressBar: 'true',
+        theme: 'relax',
+        type: 'information',
+        timeout: 1500,
+        closeWith: ['hover']
+      });
+
       this.context.router.push('/');
     })
     .catch(() => {

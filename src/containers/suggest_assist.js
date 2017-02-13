@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addAnimeToMAL } from '../actions/index';
+import noty from 'noty';
+
 
 import ReactScrollbar from 'react-scrollbar-js';
 
@@ -37,6 +39,16 @@ class SuggestAssist extends Component {
     );
   }
 
+  notify() {
+    noty({
+      text: 'Debug',
+      layout: 'bottomCenter',
+      progressBar: 'true',
+      theme: 'relax',
+      type: 'information',
+      timeout: 1500,
+    });
+  }
 
 
   render() {
@@ -45,12 +57,14 @@ class SuggestAssist extends Component {
       height: 398,
     };
     return(
-      <ReactScrollbar style={myScrollbar}>
-        <h6>Did you watch?</h6>
-        <ul>
-          {this.props.suggestion.map(this.renderSuggestionsMapper, this)}
-        </ul>
-      </ReactScrollbar>
+      <div>
+      </div>
+      // <ReactScrollbar style={myScrollbar}>
+      //   <h6>Did you watch?</h6>
+      //   <ul>
+      //     {this.props.suggestion.map(this.renderSuggestionsMapper, this)}
+      //   </ul>
+      // </ReactScrollbar>
     );
   }
 }
