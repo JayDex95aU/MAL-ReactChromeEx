@@ -15,17 +15,23 @@ class SuggestAssist extends Component {
     this.state = { clear: false };
   }
 
-  animeHelper(data) {
+  animeAdd(data) {
+    $(`.card${data.id}`).transition('scale');
+    return;
+  }
+
+  animeRemove(data) {
+    $(`.card${data.id}`).transition('scale');
     return;
   }
 
 
   renderSuggestionsMapper(data) {
     return(
-      <div className="container ui card cardCentering">
+      <div className={`container ui card cardCentering card${data.id}`} key={data.id}>
         <div className="content">
           <img className="right floated mini ui image" src={data.image_url}/>
-          <div class="header">
+          <div className="header">
             {data.name}
           </div>
           <div className="meta">
@@ -34,14 +40,14 @@ class SuggestAssist extends Component {
           </div>
 
           <div className="description">
-            Episode Watched: 8
+            Episode Watched: X
           </div>
 
         </div>
         <div className="extra content">
           <div className="ui two buttons">
-            <div className="ui basic green button">Add</div>
-            <div className="ui basic red button">Ignore</div>
+            <div onClick={() => {this.animeAdd(data)}} className="ui basic green button">Add</div>
+            <div onClick={() => {this.animeRemove(data)}} className="ui basic red button">Ignore</div>
           </div>
         </div>
       </div>
@@ -98,7 +104,7 @@ class SuggestAssist extends Component {
       <ReactScrollbar style={myScrollbar}>
         {this.props.suggestion.map(this.renderSuggestionsMapper, this)}
       </ReactScrollbar>
-      <div onClick={() => {this.setState({ clear: true })}} className="ui bottom attached button" tabindex="0">Clear All</div>
+      <div onClick={() => {this.setState({ clear: true })}} className="ui bottom attached button" tabIndex="0">Clear All</div>
       {this.clearHelper()}
     </div>
     );
