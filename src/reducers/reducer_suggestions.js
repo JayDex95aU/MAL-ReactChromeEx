@@ -1,4 +1,4 @@
-import { TAB_SUGGESTION, ANIME_ADD } from '../actions/index';
+import { TAB_SUGGESTION, ANIME_ADD, REMOVE_ANIME } from '../actions/index';
 import axios from 'axios';
 import x2js from 'x2js';
 
@@ -37,6 +37,18 @@ export default function(state = INITAL_STATE, action) {
         chrome.browserAction.setBadgeText({text: "1"});
       }
       return [ {info: animeInfo, ep: action.type[1]}, ...state ];
+
+    case REMOVE_ANIME:
+      var i;
+
+      for (i = 0; i < state.length; i++) {
+        if (state[i].info.id == action.id) {
+          state.splice(i, 1);
+          break;
+        }
+      }
+      chrome.browserAction.setBadgeText({text: `${state.length}`});
+      return [ ...state ];
     default:
       return state;
   }

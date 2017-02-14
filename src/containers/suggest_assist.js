@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addAnimeToMAL } from '../actions/index';
+import { addAnimeToMAL, removeAnimeSuggestion } from '../actions/index';
 import noty from 'noty';
 import axios from 'axios';
 
@@ -55,6 +55,7 @@ class SuggestAssist extends Component {
   $.ajax(settings).done((response) => {
       this.setState({ loadbutton: false });
       if (response == "Created") {
+        this.props.removeAnimeSuggestion(info.id);
         $(`.card${info.id}`).transition('scale');
         noty({
           text: `${info.name} has been added`,
@@ -166,7 +167,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators( { addAnimeToMAL: addAnimeToMAL } , dispatch);
+  return bindActionCreators( { addAnimeToMAL, removeAnimeSuggestion } , dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestAssist);

@@ -14,6 +14,8 @@ const store = new Store({
 
 chrome.extension.getBackgroundPage();
 
+chrome.browserAction.setBadgeText({text: `0`});
+
 const unsubscribe = store.subscribe(() => {
    unsubscribe(); // make sure to only fire once
    ReactDOM.render(
