@@ -16,6 +16,8 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, applyMiddleware(promiseMiddleware));
 
+chrome.browserAction.setBadgeText({text: "10+"});
+
 wrapStore(store, {portName: 'MAL'});
 
 // Chrome listeners for background events

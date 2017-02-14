@@ -17,6 +17,15 @@ class SuggestAssist extends Component {
 
   animeAdd(data) {
     $(`.card${data.id}`).transition('scale');
+    noty({
+      text: `${data.name} has been added`,
+      layout: 'bottomLeft',
+      progressBar: 'true',
+      theme: 'relax',
+      type: 'success',
+      timeout: 750,
+      closeWith: ['hover']
+    });
     return;
   }
 
@@ -99,6 +108,22 @@ class SuggestAssist extends Component {
       width: "100%",
       height: 425,
     };
+
+    if (this.props.suggestion.length < 1) {
+      return (
+        <div className="ui icon centered message container">
+          <i className="inbox icon"></i>
+          <div className="content">
+            <div className="header">
+              No Anime Suggestions
+            </div>
+            <p>Go visit your favourite anime sites to easily add your recently watched anime to MAL in just a click.</p>
+          </div>
+        </div>
+
+      );
+    }
+
     return(
     <div>
       <ReactScrollbar style={myScrollbar}>
