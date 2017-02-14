@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { reduxForm, reset } from 'redux-form';
 import axios from 'axios';
 import noty from 'noty';
+import { saveDetailToReducer } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class Login extends Component {
         timeout: 1500,
         closeWith: ['hover']
       });
-
+      this.props.saveDetailToReducer(props.username, props.password);
       this.context.router.push('/');
     })
     .catch(() => {
@@ -127,4 +128,4 @@ class Login extends Component {
 export default reduxForm({
   form: 'LoginForm',
   fields: ['username', 'password']
-})(Login);
+}, null, {saveDetailToReducer})(Login);

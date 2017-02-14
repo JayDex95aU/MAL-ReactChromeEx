@@ -1,4 +1,4 @@
-import { TAB_SUGGESTION, ANIME_ADD, REMOVE_ANIME } from '../actions/index';
+import { TAB_SUGGESTION, REMOVE_ANIME } from '../actions/index';
 import axios from 'axios';
 import x2js from 'x2js';
 
@@ -6,8 +6,6 @@ const INITAL_STATE = [];
 
 export default function(state = INITAL_STATE, action) {
   var preventAdd = false;
-
-  console.log(action.type);
 
   switch(action.type[0]) {
     case TAB_SUGGESTION:

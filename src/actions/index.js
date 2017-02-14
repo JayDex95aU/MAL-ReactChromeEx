@@ -4,6 +4,8 @@ export const TAB_SUGGESTION = 'TAB_SUGGESTION';
 export const BAD_ACTION = 'BAD_ACTION';
 export const ANIME_ADD = 'ANIME_ADD';
 export const REMOVE_ANIME = 'REMOVE_ANIME';
+export const LOGIN_DETAILS = 'LOGIN_DETAILS';
+export const DELETE_LOGIN_DETAILS = 'DELETE_LOGIN_DETAILS';
 
 const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword="
 
@@ -56,10 +58,16 @@ export function removeAnimeSuggestion(id) {
   }
 }
 
-export function addAnimeToMAL(id) {
+export function saveDetailToReducer(username, password) {
   return {
-    type: ANIME_ADD,
-    episode: ep,
-    payload: id
+    type: [LOGIN_DETAILS],
+    username: username,
+    password: password
+  }
+}
+
+export function clearDetailsInReducer() {
+  return {
+    type: [DELETE_LOGIN_DETAILS]
   }
 }

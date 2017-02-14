@@ -5,18 +5,26 @@ import promiseMiddleware from 'redux-promise';
 import UrlPattern from 'url-pattern';
 
 import SuggestionsReducer from './reducer_suggestions';
-import { fetchSuggestions, searchMAL } from '../actions/index';
+import LoginReducer from './reducer_login';
+import { searchMAL, saveDetailToReducer, clearDetailsInReducer } from '../actions/index';
 import { reducer as formReducer } from 'redux-form'
 
 const rootReducer = combineReducers({
   suggestion: SuggestionsReducer,
-  form: formReducer
+  form: formReducer,
+  login: LoginReducer
 });
 
 
 const store = createStore(rootReducer, applyMiddleware(promiseMiddleware));
 
 wrapStore(store, {portName: 'MAL'});
+
+chrome.storage.local.get({username_MAL_95au: '', password_MAL_95au: ''}, (details) => {
+  if (details.username_MAL_95au != '' && details.password_MAL_95au != '') {
+    store.dispatch(saveDetailToReducer(details.username_MAL_95au, details.password_MAL_95au));
+  }
+})
 
 // Chrome listeners for background events
 chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {

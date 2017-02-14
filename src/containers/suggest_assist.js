@@ -17,7 +17,20 @@ class SuggestAssist extends Component {
     this.state = { clear: false, loadbutton: false };
   }
 
-  animeAdd(info, ep, username, password) {
+  animeAdd(info, ep) {
+    console.log(this.props.loginDetails);
+    if (!this.props.loginDetails.username) {
+      noty({
+        text: `Please Login to Add Anime`,
+        layout: 'bottomLeft',
+        theme: 'relax',
+        type: 'success',
+        timeout: 1500,
+        closeWith: ['hover']
+      });
+      return;
+    }
+
     this.setState({ loadbutton: true });
     var myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
       "<entry>" +
@@ -42,8 +55,8 @@ class SuggestAssist extends Component {
       "crossDomain": true,
       "url": `https://myanimelist.net/api/animelist/add/${info.id}.xml`,
       "method": "POST",
-      "username": "JayDex",
-      "password": "95life95aU",
+      "username": `${this.props.loginDetails.username}`,
+      "password": `${this.props.loginDetails.password}`,
       "headers": {
         "content-type": "application/x-www-form-urlencoded",
       },
@@ -134,8 +147,6 @@ class SuggestAssist extends Component {
       height: 425,
     };
 
-
-
     if (this.props.suggestion.length < 1) {
       return (
         <div className="ui icon centered message container">
@@ -164,7 +175,7 @@ class SuggestAssist extends Component {
 }
 
 function mapStateToProps(state) {
-  return { suggestion: state.suggestion};
+  return { suggestion: state.suggestion, loginDetails: state.login };
 }
 
 function mapDispatchToProps(dispatch) {

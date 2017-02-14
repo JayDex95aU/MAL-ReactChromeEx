@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import noty from 'noty';
+import { clearDetailsInReducer } from '../actions';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { log: ''}
+    this.state = { log: '' }
     this.logoutHelper = this.logoutHelper.bind(this);
   }
 
@@ -14,8 +16,8 @@ class App extends Component {
   }
 
   logoutHelper() {
-    chrome.storage.local.set({'username_MAL_95au': ''});
-    chrome.storage.local.set({'password_MAL_95au': ''});
+    this.props.clearDetailsInReducer();
+    chrome.storage.local.clear();
     noty({
       text: `<h5>Logout</h5><p>Thank you for using AutoMAL</p>`,
       layout: 'bottomLeft',
@@ -27,7 +29,7 @@ class App extends Component {
   }
 
   logRender() {
-    chrome.storage.local.get('username_MAL_95au', (data) => {
+    chrome.storage.local.get({username_MAL_95au: ''}, (data) => {
       if (data.username_MAL_95au != '') {
         this.setState({ log: 'Logout' });
       } else {
@@ -71,4 +73,8 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return { loginDetails: state.login };
+}
+
+export default connect(mapStateToProps, {clearDetailsInReducer})(App);
