@@ -112,12 +112,15 @@ class SuggestAssist extends Component {
           </a>
           <div className="meta">
             {data.info.payload.status} | <i className="star icon"></i>
-            {data.info.payload.score}
+          {data.info.payload.score} -
+            <a className="ui mini label">
+               Ep Update
+               {/* Ep Update Or New */}
+            </a>
           </div>
 
           <div className="description">
-            Did you watch Episode: {data.ep} ?
-            {/* <div className="ui mini input"><input type="text" defaultValue={data.ep} /></div> */}
+            Did you watch Episode: {data.ep}?
           </div>
 
         </div>
