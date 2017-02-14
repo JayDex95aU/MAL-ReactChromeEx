@@ -39,9 +39,11 @@ class SuggestAssist extends Component {
       <div className={`container ui card cardCentering card${data.info.id}`} key={data.info.id}>
         <div className="content">
           <img className="right floated mini ui image" src={data.info.image_url}/>
-          <div className="header">
-            {data.info.name}
-          </div>
+          <a href="#" className="header">
+            <div onClick={() => {
+                chrome.tabs.create({url: `${data.info.url}`});
+              }}>{data.info.name}</div>
+          </a>
           <div className="meta">
             {data.info.payload.status} | <i className="star icon"></i>
             {data.info.payload.score}
@@ -77,6 +79,8 @@ class SuggestAssist extends Component {
       width: "100%",
       height: 425,
     };
+
+
 
     if (this.props.suggestion.length < 1) {
       return (

@@ -23,19 +23,6 @@ export default function(state = INITAL_STATE, action) {
               value.ep = action.type[1];
             }
           }
-
-
-          // if (!isNaN(action.type[1])) {
-          //   if (action.type[1] > value.ep) {
-          //     console.log("Newer EP");
-          //     value.ep = action.type[1];
-          //   } else {
-          //     console.log("Older EP");
-          //     preventAdd = true;
-          //   }
-          // } else {
-          //   preventAdd = true;
-          // }
         }
       })
 
@@ -43,6 +30,11 @@ export default function(state = INITAL_STATE, action) {
         return state;
       }
       console.log("Anime not in state");
+      if (state.length > 0) {
+        chrome.browserAction.setBadgeText({text: `${state.length}`});
+      } else {
+        chrome.browserAction.setBadgeText({text: "1"});
+      }
       return [ {info: animeInfo, ep: action.type[1]}, ...state ];
     default:
       return state;
