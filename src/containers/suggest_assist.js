@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addAnimeToMAL } from '../actions/index';
 import noty from 'noty';
-
+import axios from 'axios';
 
 import ReactScrollbar from 'react-scrollbar-js';
 
@@ -12,18 +12,69 @@ class SuggestAssist extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { clear: false };
+    this.animeAdd = this.animeAdd.bind(this);
+
+    this.state = { clear: false, loadbutton: false };
   }
 
-  animeAdd(data) {
-    $(`.card${data.id}`).transition('scale');
-    noty({
-      text: `${data.name} has been added`,
-      layout: 'bottomLeft',
-      theme: 'relax',
-      type: 'success',
-      timeout: 750,
-      closeWith: ['hover']
+  animeAdd(info, ep, username, password) {
+    this.setState({ loadbutton: true });
+    var myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+      "<entry>" +
+      `<episode>${ep}</episode>` +
+      "<status>1</status>" +
+      "<score></score>" +
+      "<storage_type></storage_type>" +
+      "<storage_value></storage_value>" +
+      "<times_rewatched></times_rewatched>" +
+      "<rewatch_value></rewatch_value>" +
+      "<date_start></date_start>" +
+      "<date_finish></date_finish>" +
+      "<priority></priority>" +
+      "<enable_discussion></enable_discussion>" +
+      "<enable_rewatching></enable_rewatching>" +
+      "<comments></comments>" +
+      "<tags></tags>" +
+      "</entry>";
+
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": `https://myanimelist.net/api/animelist/add/${info.id}.xml`,
+      "method": "POST",
+      "username": "JayDex",
+      "password": "95life95aU",
+      "headers": {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      "data": {
+        "data": myXML
+      }
+    }
+
+  $.ajax(settings).done((response) => {
+      this.setState({ loadbutton: false });
+      if (response == "Created") {
+        $(`.card${info.id}`).transition('scale');
+        noty({
+          text: `${info.name} has been added`,
+          layout: 'bottomLeft',
+          theme: 'relax',
+          type: 'success',
+          timeout: 1500,
+          closeWith: ['hover']
+        });
+      }
+    }).fail((err) => {
+      this.setState({ loadbutton: false });
+      noty({
+        text: `ERROR: Anime couldn't be added to your list`,
+        layout: 'bottomLeft',
+        theme: 'relax',
+        type: 'error',
+        timeout: 1500,
+        closeWith: ['hover']
+      });
     });
     return;
   }
@@ -50,14 +101,15 @@ class SuggestAssist extends Component {
           </div>
 
           <div className="description">
-            Episode: <div className="ui mini input"><input type="text" defaultValue={data.ep} /></div>
+            Did you watch Episode: {data.ep} ?
+            {/* <div className="ui mini input"><input type="text" defaultValue={data.ep} /></div> */}
           </div>
 
         </div>
         <div className="extra content">
           <div className="ui two buttons">
-            <div onClick={() => {this.animeAdd(data.info)}} className="ui basic green button">Add</div>
-            <div onClick={() => {this.animeRemove(data.info)}} className="ui basic red button">Ignore</div>
+            <div onClick={() => {this.animeAdd(data.info, data.ep)}} className={`ui basic green button ${this.state.loadbutton ? 'loading' : ''}`}>Yes</div>
+            <div onClick={() => {this.animeRemove(data.info)}} className="ui basic red button">No</div>
           </div>
         </div>
       </div>

@@ -51,6 +51,7 @@ export function searchMAL(url) {
 export function addAnimeToMAL(id) {
   return {
     type: ANIME_ADD,
+    episode: ep,
     payload: id
   }
 }
