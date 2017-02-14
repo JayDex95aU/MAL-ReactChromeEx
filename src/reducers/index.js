@@ -16,8 +16,6 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, applyMiddleware(promiseMiddleware));
 
-
-
 wrapStore(store, {portName: 'MAL'});
 
 // Chrome listeners for background events

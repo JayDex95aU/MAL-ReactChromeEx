@@ -80,7 +80,8 @@ class SuggestAssist extends Component {
     return;
   }
 
-  animeRemove(data) {
+  animeRemove(info) {
+    this.props.removeAnimeSuggestion(info.id);
     $(`.card${data.id}`).transition('scale');
     return;
   }
