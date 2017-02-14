@@ -30,8 +30,9 @@ export default function(state = INITAL_STATE, action) {
         return state;
       }
       console.log("Anime not in state");
+      console.log(state.length);
       if (state.length > 0) {
-        chrome.browserAction.setBadgeText({text: `${state.length}`});
+        chrome.browserAction.setBadgeText({text: `${state.length + 1}`});
       } else {
         chrome.browserAction.setBadgeText({text: "1"});
       }
