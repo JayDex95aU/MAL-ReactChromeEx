@@ -13,7 +13,7 @@ const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword=
 **/
 export function searchMAL(url) {
   var query = '';
-
+  var episode = '';
   console.log(url);
 
   if (!url) return {type: BAD_ACTION};
@@ -23,6 +23,15 @@ export function searchMAL(url) {
         return {type: BAD_ACTION};
       }
       query = url.two;
+      try {
+        episode = url._.slice(8, 11).replace(/^0+/, '');
+        if (isNaN(episode)) {
+          episode = "Film";
+        }
+      }
+      catch(err) {
+        episode = "Film";
+      }
       break;
     default:
       return {type: BAD_ACTION}
@@ -34,7 +43,7 @@ export function searchMAL(url) {
   });
 
   return {
-    type: TAB_SUGGESTION,
+    type: [ TAB_SUGGESTION, episode ],
     payload: request
   }
 }

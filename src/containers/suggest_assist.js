@@ -20,7 +20,6 @@ class SuggestAssist extends Component {
     noty({
       text: `${data.name} has been added`,
       layout: 'bottomLeft',
-      progressBar: 'true',
       theme: 'relax',
       type: 'success',
       timeout: 750,
@@ -37,60 +36,30 @@ class SuggestAssist extends Component {
 
   renderSuggestionsMapper(data) {
     return(
-      <div className={`container ui card cardCentering card${data.id}`} key={data.id}>
+      <div className={`container ui card cardCentering card${data.info.id}`} key={data.info.id}>
         <div className="content">
-          <img className="right floated mini ui image" src={data.image_url}/>
+          <img className="right floated mini ui image" src={data.info.image_url}/>
           <div className="header">
-            {data.name}
+            {data.info.name}
           </div>
           <div className="meta">
-            {data.payload.status} | <i className="star icon"></i>
-            {data.payload.score}
+            {data.info.payload.status} | <i className="star icon"></i>
+            {data.info.payload.score}
           </div>
 
           <div className="description">
-            Episode Watched: X
+            Episode: <div className="ui mini input"><input type="text" defaultValue={data.ep} /></div>
           </div>
 
         </div>
         <div className="extra content">
           <div className="ui two buttons">
-            <div onClick={() => {this.animeAdd(data)}} className="ui basic green button">Add</div>
-            <div onClick={() => {this.animeRemove(data)}} className="ui basic red button">Ignore</div>
+            <div onClick={() => {this.animeAdd(data.info)}} className="ui basic green button">Add</div>
+            <div onClick={() => {this.animeRemove(data.info)}} className="ui basic red button">Ignore</div>
           </div>
         </div>
       </div>
     );
-    //data.image_url data.name
-    // return(
-    //   {data.name}
-    //   //
-    //   // <li key={data.id}>
-    //   //   <div className="divider divider-magin"/>
-    //   //   <div className="row">
-    //   //     <img className="col s3 suggestion_list" src={data.image_url} />
-    //   //     <p className="col s5 paragraph_style">{data.name}</p>
-    //   //     <div className="col s4">
-    //   //       <button onClick={() => {
-    //   //           this.props.addAnimeToMAL(data.id);
-    //   //         }} className="btn">YES</button>
-    //   //       <button className="btn red">_NO</button>
-    //   //     </div>
-    //   //   </div>
-    //   //
-    //   // </li>
-    // );
-  }
-
-  notify() {
-    noty({
-      text: 'Debug',
-      layout: 'bottomCenter',
-      progressBar: 'true',
-      theme: 'relax',
-      type: 'information',
-      timeout: 1500,
-    });
   }
 
   clearHelper() {
@@ -137,7 +106,7 @@ class SuggestAssist extends Component {
 }
 
 function mapStateToProps(state) {
-  return { suggestion: state.suggestion };
+  return { suggestion: state.suggestion};
 }
 
 function mapDispatchToProps(dispatch) {

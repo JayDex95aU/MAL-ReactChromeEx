@@ -7,37 +7,43 @@ const INITAL_STATE = [];
 export default function(state = INITAL_STATE, action) {
   var preventAdd = false;
 
-  switch(action.type) {
+  console.log(action.type);
+
+  switch(action.type[0]) {
     case TAB_SUGGESTION:
       const animeInfo = animeInfoHelper(action.payload.data);
       state.map((value) => {
-        if (value.id == animeInfo.id) {
-          console.log("Anime in state");
+        if (value.info.id == animeInfo.id) {
           preventAdd = true;
+
+          console.log("Anime in state");
+
+          if (!isNaN(action.type[1])) {
+            if (action.type[1] > value.ep) {
+              value.ep = action.type[1];
+            }
+          }
+
+
+          // if (!isNaN(action.type[1])) {
+          //   if (action.type[1] > value.ep) {
+          //     console.log("Newer EP");
+          //     value.ep = action.type[1];
+          //   } else {
+          //     console.log("Older EP");
+          //     preventAdd = true;
+          //   }
+          // } else {
+          //   preventAdd = true;
+          // }
         }
       })
 
       if (preventAdd) {
         return state;
       }
-      console.log(animeInfo);
       console.log("Anime not in state");
-      return [ animeInfo, ...state ];
-    case ANIME_ADD:
-      chrome.storage.local.get({username: 'username_MAL_95au', password: 'password_MAL_95au'}, (object) => {
-        const request = axios({
-          method: 'post',
-          url: `${SEARCH_URL}${query}`,
-          data: {
-            id: action.payload
-          },
-          auth: {
-            username: object.username,
-            password: object.password
-          }
-        });
-      });
-      break;
+      return [ {info: animeInfo, ep: action.type[1]}, ...state ];
     default:
       return state;
   }

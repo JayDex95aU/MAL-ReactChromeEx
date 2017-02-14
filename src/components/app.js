@@ -19,7 +19,6 @@ class App extends Component {
     noty({
       text: `<h5>Logout</h5><p>Thank you for using AutoMAL</p>`,
       layout: 'bottomLeft',
-      progressBar: 'true',
       theme: 'relax',
       type: 'information',
       timeout: 1500,

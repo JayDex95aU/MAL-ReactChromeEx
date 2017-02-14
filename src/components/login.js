@@ -35,7 +35,6 @@ class Login extends Component {
       noty({
         text: `<h5>Login</h5><p>Welcome ${props.username}</p>`,
         layout: 'bottomLeft',
-        progressBar: 'true',
         theme: 'relax',
         type: 'information',
         timeout: 1500,

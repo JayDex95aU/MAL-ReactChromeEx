@@ -21,9 +21,10 @@ chrome.browserAction.setBadgeText({text: "10+"});
 wrapStore(store, {portName: 'MAL'});
 
 // Chrome listeners for background events
-chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
+chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
   const url = tab.url;
-  if (url !== undefined && changeinfo.status == "complete") {
+  if (url !== undefined && changeInfo.audible) {
+      //Updated listener to only fire when video plays
       const pattern = new UrlPattern('(http(s)\\://)(:subdomain.):domain.:tld(\\::port)(/:one)(/:two)(/:three)(/:four)(/*)');
       const urlSplit = pattern.match(tab.url);
       store.dispatch(searchMAL(urlSplit));
