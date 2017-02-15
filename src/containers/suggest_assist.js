@@ -162,7 +162,7 @@ class SuggestAssist extends Component {
     }
     if (data.series_ep == '?') {
       return(
-        <a className="ui mini label">Unknown Ep Length</a>
+        <a className="ui mini label">Length: N/A</a>
       );
     } else {
       return(
@@ -181,16 +181,52 @@ class SuggestAssist extends Component {
   }
 
   renderSuggestionsMapper(data) {
+    if (this.props.loginDetails.username == '') {
+      return(
+        <div className={`container ui card cardCentering card${data.info.id}`} key={data.info.id}>
+          <div className="content">
+            <img className="right floated mini ui image" src={data.info.image_url}/>
+            <a href="#" className="header">
+              <div onClick={() => {
+                  chrome.tabs.create({url: `${data.info.url}`});
+                }}>{data.info.name}</div>
+            </a>
+            <div className="meta">
+              {data.info.payload.aired} |
+              <i className="star icon"></i>{data.info.payload.score}
+            </div>
+
+            <div className="description">
+              Did you watch Episode: {data.ep}
+            </div>
+
+          </div>
+          <div className="extra content">
+            <div className="ui two buttons">
+              <div onClick={() => {this.animeAdd(data.info, data.ep, data.status)}} className={`ui basic green button ${this.state.loadbutton ? 'loading' : ''}`}>Yes</div>
+              <div onClick={() => {this.animeRemove(data.info)}} className="ui basic red button">No</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    console.log(data.status);
     if (data.status == "Rewatching") {
       return (
         <div className={`container ui card cardCentering card${data.info.id}`} key={data.info.id}>
           <div className="content">
             <img className="right floated mini ui image" src={data.info.image_url}/>
-            <div className="header">{data.info.name}</div>
+              <a href="#" className="header">
+                <div onClick={() => {
+                    chrome.tabs.create({url: `${data.info.url}`});
+                  }}>{data.info.name}</div>
+              </a>
             <div className="meta">
               <a className="ui mini label">Rewatching</a>
               {this.labelRenderHelperRewatch(data)}
               {this.labelRenderHelperRewatchEp(data)}
+              {this.labelRenderHelperCurrentEpCount(data)}
             </div>
             <div className="description">You're rewatching episode {data.ep}</div>
           </div>

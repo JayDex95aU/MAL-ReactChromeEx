@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { reduxForm, reset } from 'redux-form';
 import axios from 'axios';
 import noty from 'noty';
-import { saveDetailToReducer, specialgetUserAnime } from '../actions';
+import { saveDetailToReducer, specialgetUserAnime, updateExistingSuggestions } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -48,6 +48,7 @@ class Login extends Component {
         url: `https://myanimelist.net/malappinfo.php?u=${props.username}&status=all&type=anime`
       }).then((data) => {
         this.props.specialgetUserAnime(data);
+        this.props.updateExistingSuggestions(data);
       });
       this.context.router.push('/');
     })
@@ -132,7 +133,11 @@ class Login extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return { useranime: state.useranime };
+}
+
 export default reduxForm({
   form: 'LoginForm',
   fields: ['username', 'password']
-}, null, {saveDetailToReducer, specialgetUserAnime})(Login);
+}, mapStateToProps, {saveDetailToReducer, specialgetUserAnime, updateExistingSuggestions})(Login);

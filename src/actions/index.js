@@ -1,4 +1,5 @@
 import axios from 'axios';
+import x2js from 'x2js';
 
 export const TAB_SUGGESTION = 'TAB_SUGGESTION';
 export const BAD_ACTION = 'BAD_ACTION';
@@ -7,6 +8,8 @@ export const REMOVE_ANIME = 'REMOVE_ANIME';
 export const LOGIN_DETAILS = 'LOGIN_DETAILS';
 export const DELETE_LOGIN_DETAILS = 'DELETE_LOGIN_DETAILS';
 export const USER_ANIME = 'USER_ANIME';
+export const CLEAR_USER_ANIME = 'CLEAR_USER_ANIME';
+export const LOGIN_UPDATE_EXISTING_SUGGESTIONS = 'LOGIN_UPDATE_EXISTING_SUGGESTIONS';
 
 const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword="
 
@@ -91,5 +94,20 @@ export function getUserAnime(username) {
   return {
     type: [USER_ANIME],
     payload: request,
+  }
+}
+
+export function clearUserAnime() {
+  return {
+    type: [CLEAR_USER_ANIME]
+  }
+}
+
+export function updateExistingSuggestions(useranime) {
+  var parser = new x2js();
+  parser = parser.xml2js(useranime.data).myanimelist.anime;
+  return {
+    type: [LOGIN_UPDATE_EXISTING_SUGGESTIONS],
+    payload: parser
   }
 }

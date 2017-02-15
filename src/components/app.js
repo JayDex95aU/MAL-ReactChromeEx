@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import noty from 'noty';
-import { clearDetailsInReducer } from '../actions';
+import { clearDetailsInReducer, clearUserAnime } from '../actions';
 
 class App extends Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class App extends Component {
 
   logoutHelper() {
     this.props.clearDetailsInReducer();
+    this.props.clearUserAnime();
     chrome.storage.local.clear();
     noty({
       text: `<h5>Logout</h5><p>Thank you for using AutoMAL</p>`,
@@ -77,4 +78,4 @@ function mapStateToProps(state) {
   return { loginDetails: state.login };
 }
 
-export default connect(mapStateToProps, {clearDetailsInReducer})(App);
+export default connect(mapStateToProps, {clearDetailsInReducer, clearUserAnime})(App);

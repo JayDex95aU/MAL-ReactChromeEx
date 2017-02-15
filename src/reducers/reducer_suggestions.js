@@ -1,4 +1,4 @@
-import { TAB_SUGGESTION, REMOVE_ANIME } from '../actions/index';
+import { TAB_SUGGESTION, REMOVE_ANIME, LOGIN_UPDATE_EXISTING_SUGGESTIONS } from '../actions/index';
 import axios from 'axios';
 import x2js from 'x2js';
 
@@ -8,16 +8,37 @@ export default function(state = INITAL_STATE, action) {
   var preventAdd = false;
 
   switch(action.type[0]) {
-    case TAB_SUGGESTION:
+    case LOGIN_UPDATE_EXISTING_SUGGESTIONS:
+      var i;
+      var g;
 
+      for (i = 0; i < state.length; i++) {
+        for (g = 0; g < action.payload.length; g++) {
+          if (state[i].info.id == action.payload[g].series_animedb_id) {
+
+            if (state[i].ep <= action.payload[g].my_watched_episodes) {
+              state[i].status = "Rewatching"
+            } else {
+              state[i].status = "Update"
+            }
+            state[i].watched_ep = action.payload[g].my_watched_episodes;
+            if (action.payload[g].series_episodes == "0") {
+              state[i].series_ep = '?';
+            } else {
+              state[i].series_ep = action.payload[g].series_episodes;
+            }
+          }
+        }
+      }
+      console.log(state);
+      return [ ...state];
+    case TAB_SUGGESTION:
       const useranime = action.type[2];
       const animeInfo = animeInfoHelper(action.payload.data);
       var status = 'New';
       var series_ep = '?';
       var my_watched_episodes = '';
       var i;
-
-
       for (i = 0; i < useranime.length; i++) {
         if (animeInfo.id == useranime[i].series_animedb_id) {
 
@@ -39,10 +60,11 @@ export default function(state = INITAL_STATE, action) {
         }
       }
 
-      console.log(status);
-
       state.map((value) => {
         if (value.info.id == animeInfo.id) {
+          value.status = status;
+          value.series_ep = series_ep;
+          value.watched_ep = my_watched_episodes;
           preventAdd = true;
 
           console.log("Anime in state");
@@ -56,7 +78,7 @@ export default function(state = INITAL_STATE, action) {
       })
 
       if (preventAdd) {
-        return state;
+        return [ ...state];
       }
       console.log("Anime not in state");
       if (state.length > 0) {
