@@ -6,13 +6,15 @@ import UrlPattern from 'url-pattern';
 
 import SuggestionsReducer from './reducer_suggestions';
 import LoginReducer from './reducer_login';
-import { searchMAL, saveDetailToReducer, clearDetailsInReducer } from '../actions/index';
+import UserAnimeReducer from './reducer_useranime';
+import { searchMAL, saveDetailToReducer, clearDetailsInReducer, getUserAnime } from '../actions/index';
 import { reducer as formReducer } from 'redux-form'
 
 const rootReducer = combineReducers({
   suggestion: SuggestionsReducer,
   form: formReducer,
-  login: LoginReducer
+  login: LoginReducer,
+  useranime: UserAnimeReducer
 });
 
 
@@ -23,6 +25,7 @@ wrapStore(store, {portName: 'MAL'});
 chrome.storage.local.get({username_MAL_95au: '', password_MAL_95au: ''}, (details) => {
   if (details.username_MAL_95au != '' && details.password_MAL_95au != '') {
     store.dispatch(saveDetailToReducer(details.username_MAL_95au, details.password_MAL_95au));
+    store.dispatch(getUserAnime(details.username_MAL_95au));
   }
 })
 

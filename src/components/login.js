@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { reduxForm, reset } from 'redux-form';
 import axios from 'axios';
 import noty from 'noty';
-import { saveDetailToReducer } from '../actions';
+import { saveDetailToReducer, getUserAnime } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -42,6 +42,7 @@ class Login extends Component {
         closeWith: ['hover']
       });
       this.props.saveDetailToReducer(props.username, props.password);
+      this.props.getUserAnime(props.username);
       this.context.router.push('/');
     })
     .catch(() => {
@@ -128,4 +129,4 @@ class Login extends Component {
 export default reduxForm({
   form: 'LoginForm',
   fields: ['username', 'password']
-}, null, {saveDetailToReducer})(Login);
+}, null, {saveDetailToReducer, getUserAnime})(Login);

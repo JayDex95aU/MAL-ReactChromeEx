@@ -6,6 +6,7 @@ export const ANIME_ADD = 'ANIME_ADD';
 export const REMOVE_ANIME = 'REMOVE_ANIME';
 export const LOGIN_DETAILS = 'LOGIN_DETAILS';
 export const DELETE_LOGIN_DETAILS = 'DELETE_LOGIN_DETAILS';
+export const USER_ANIME = 'USER_ANIME';
 
 const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword="
 
@@ -69,5 +70,12 @@ export function saveDetailToReducer(username, password) {
 export function clearDetailsInReducer() {
   return {
     type: [DELETE_LOGIN_DETAILS]
+  }
+}
+
+export function getUserAnime(username) {
+  return {
+    type: [USER_ANIME],
+    username: username
   }
 }
