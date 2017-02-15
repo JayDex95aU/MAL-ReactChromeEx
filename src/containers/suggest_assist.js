@@ -17,7 +17,7 @@ class SuggestAssist extends Component {
     this.state = { clear: false, loadbutton: false };
   }
 
-  animeAdd(info, ep) {
+  animeAdd(info, ep, status) {
     console.log(this.props.loginDetails);
     if (!this.props.loginDetails.username) {
       noty({
@@ -50,24 +50,42 @@ class SuggestAssist extends Component {
       "<tags></tags>" +
       "</entry>";
 
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": `https://myanimelist.net/api/animelist/add/${info.id}.xml`,
-      "method": "POST",
-      "username": `${this.props.loginDetails.username}`,
-      "password": `${this.props.loginDetails.password}`,
-      "headers": {
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      "data": {
-        "data": myXML
+    var settings;
+
+    if (status == "Update") {
+      settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": `https://myanimelist.net/api/animelist/update/${info.id}.xml`,
+        "method": "POST",
+        "username": `${this.props.loginDetails.username}`,
+        "password": `${this.props.loginDetails.password}`,
+        "headers": {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        "data": {
+          "data": myXML
+        }
+      }
+    } else {
+      settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": `https://myanimelist.net/api/animelist/add/${info.id}.xml`,
+        "method": "POST",
+        "username": `${this.props.loginDetails.username}`,
+        "password": `${this.props.loginDetails.password}`,
+        "headers": {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        "data": {
+          "data": myXML
+        }
       }
     }
 
   $.ajax(settings).done((response) => {
       this.setState({ loadbutton: false });
-      if (response == "Created") {
         const request = axios({
           method: 'get',
           url: `https://myanimelist.net/malappinfo.php?u=${this.props.loginDetails.username}&status=all&type=anime`
@@ -78,15 +96,25 @@ class SuggestAssist extends Component {
         setTimeout(() => {
           this.props.removeAnimeSuggestion(info.id);
         }, 150);
-        noty({
-          text: `${info.name} has been added`,
-          layout: 'bottomLeft',
-          theme: 'relax',
-          type: 'success',
-          timeout: 1500,
-          closeWith: ['hover']
-        });
-      }
+        if (status == "Update") {
+          noty({
+            text: `${info.name} has been updated`,
+            layout: 'bottomLeft',
+            theme: 'relax',
+            type: 'success',
+            timeout: 1500,
+            closeWith: ['hover']
+          });
+        } else {
+          noty({
+            text: `${info.name} has been added`,
+            layout: 'bottomLeft',
+            theme: 'relax',
+            type: 'success',
+            timeout: 1500,
+            closeWith: ['hover']
+          });
+        }
     }).fail((err) => {
       this.setState({ loadbutton: false });
       noty({
@@ -201,7 +229,7 @@ class SuggestAssist extends Component {
         </div>
         <div className="extra content">
           <div className="ui two buttons">
-            <div onClick={() => {this.animeAdd(data.info, data.ep)}} className={`ui basic green button ${this.state.loadbutton ? 'loading' : ''}`}>Yes</div>
+            <div onClick={() => {this.animeAdd(data.info, data.ep, data.status)}} className={`ui basic green button ${this.state.loadbutton ? 'loading' : ''}`}>Yes</div>
             <div onClick={() => {this.animeRemove(data.info)}} className="ui basic red button">No</div>
           </div>
         </div>
