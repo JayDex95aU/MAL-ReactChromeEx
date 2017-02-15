@@ -30,7 +30,7 @@ export default function(state = INITAL_STATE, action) {
           }
         }
       }
-      console.log(state);
+      // console.log(state);
       return [ ...state];
     case TAB_SUGGESTION:
       const useranime = action.type[2];
@@ -51,7 +51,7 @@ export default function(state = INITAL_STATE, action) {
             break;
           }
           status = "Update";
-          console.log(useranime[i]);
+          // console.log(useranime[i]);
           // console.log(useranime[i].series_episodes);
           if (useranime[i].series_episodes != "0") {
             series_ep = useranime[i].series_episodes;
@@ -67,7 +67,7 @@ export default function(state = INITAL_STATE, action) {
           value.watched_ep = my_watched_episodes;
           preventAdd = true;
 
-          console.log("Anime in state");
+          // console.log("Anime in state");
 
           if (!isNaN(action.type[1])) {
             if (action.type[1] > value.ep) {
@@ -80,7 +80,7 @@ export default function(state = INITAL_STATE, action) {
       if (preventAdd) {
         return [ ...state];
       }
-      console.log("Anime not in state");
+      // console.log("Anime not in state");
       if (state.length > 0) {
         chrome.browserAction.setBadgeText({text: `${state.length + 1}`});
       } else {

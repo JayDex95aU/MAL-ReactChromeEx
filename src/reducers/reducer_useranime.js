@@ -7,7 +7,7 @@ export default function(state = {myinfo: {}, anime: []}, action) {
     case USER_ANIME:
       var parser = new x2js();
       parser = parser.xml2js(action.payload.data).myanimelist;
-      console.log(parser);
+      // console.log(parser);
       return parser;
     case CLEAR_USER_ANIME:
       return {myinfo: {}, anime: []};

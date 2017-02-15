@@ -18,7 +18,7 @@ class SuggestAssist extends Component {
   }
 
   animeAdd(info, ep, status) {
-    console.log(this.props.loginDetails);
+    // console.log(this.props.loginDetails);
     if (!this.props.loginDetails.username) {
       noty({
         text: `Please Login to Add Anime`,
@@ -146,7 +146,7 @@ class SuggestAssist extends Component {
   }
 
   labelRenderHelperRewatch(data) {
-    console.log(data);
+    // console.log(data);
     if (parseInt(data.watched_ep) == parseInt(data.series_ep)) {
       return(
         <a className="ui mini label">Series Completed</a>
@@ -211,7 +211,7 @@ class SuggestAssist extends Component {
       );
     }
 
-    console.log(data.status);
+    // console.log(data.status);
     if (data.status == "Rewatching") {
       return (
         <div className={`container ui card cardCentering card${data.info.id}`} key={data.info.id}>

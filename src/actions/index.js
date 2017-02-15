@@ -22,7 +22,7 @@ export function searchMAL(url, useranime) {
 
   var query = '';
   var episode = '';
-  console.log(url);
+  // console.log(url);
 
   if (!url) return {type: BAD_ACTION};
   switch(url.domain) {
