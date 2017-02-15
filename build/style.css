@@ -13,3 +13,15 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+
+button {
+  outline: none;
+}
+
+a {
+  outline: none;
+}
+
+div {
+  outline: none;
+}
