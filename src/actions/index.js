@@ -73,9 +73,20 @@ export function clearDetailsInReducer() {
   }
 }
 
-export function getUserAnime(username) {
+export function specialgetUserAnime(data) {
   return {
     type: [USER_ANIME],
-    username: username
+    payload: data
+  }
+}
+
+export function getUserAnime(username) {
+  const request = axios({
+    method: 'get',
+    url: `https://myanimelist.net/malappinfo.php?u=${username}&status=all&type=anime`
+  });
+  return {
+    type: [USER_ANIME],
+    payload: request,
   }
 }

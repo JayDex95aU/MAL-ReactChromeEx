@@ -5,14 +5,9 @@ import x2js from 'x2js';
 export default function(state = {}, action) {
   switch(action.type[0]) {
     case USER_ANIME:
-      axios({
-        method: 'get',
-        url: `https://myanimelist.net/malappinfo.php?u=${action.username}&status=all&type=anime`
-      }).then((response) => {
-        var parser = new x2js();
-        parser = parser.xml2js(response.data).myanimelist;
-        return parser;
-      });
+      var parser = new x2js();
+      parser = parser.xml2js(action.payload.data).myanimelist;
+      return parser;
     default:
       return state;
   };
