@@ -31,8 +31,6 @@ class SuggestAssist extends Component {
       return;
     }
 
-    console.log("Hello World");
-
     this.setState({ loadbutton: true });
     var myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
       "<entry>" +
@@ -76,8 +74,10 @@ class SuggestAssist extends Component {
         }).then((data) => {
           this.props.specialgetUserAnime(data);
         });
-        this.props.removeAnimeSuggestion(info.id);
         $(`.card${info.id}`).transition('scale');
+        setTimeout(() => {
+          this.props.removeAnimeSuggestion(info.id);
+        }, 150);
         noty({
           text: `${info.name} has been added`,
           layout: 'bottomLeft',
@@ -143,6 +143,15 @@ class SuggestAssist extends Component {
     }
   }
 
+  labelRenderHelperCurrentEpCount(data) {
+    if (data.watched_ep != '') {
+      return(
+        <a className="ui mini label">You're on Episode: {data.watched_ep}</a>
+      );
+    }
+    return;
+  }
+
   renderSuggestionsMapper(data) {
     if (data.status == "Rewatching") {
       return (
@@ -181,6 +190,7 @@ class SuggestAssist extends Component {
                {this.labelRenderHelper(data.status)}
             </a>
             {this.labelRenderHelperRewatchEp(data)}
+            {this.labelRenderHelperCurrentEpCount(data)}
             <i className="star icon"></i>{data.info.payload.score}
           </div>
 

@@ -29,15 +29,17 @@ chrome.storage.local.get({username_MAL_95au: '', password_MAL_95au: ''}, (detail
   }
 })
 
-// Chrome listeners for background events
-chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
-  const url = tab.url;
-  if (url !== undefined && changeInfo.audible) {
-    const useranime = store.getState().useranime.anime;
+setTimeout(() => {
+  // Chrome listeners for background events
+  chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
+    const url = tab.url;
+    if (url !== undefined && changeInfo.audible) {
+      const useranime = store.getState().useranime.anime;
 
-    //Updated listener to only fire when video plays
-    const pattern = new UrlPattern('(http(s)\\://)(:subdomain.):domain.:tld(\\::port)(/:one)(/:two)(/:three)(/:four)(/*)');
-    const urlSplit = pattern.match(tab.url);
-    store.dispatch(searchMAL(urlSplit, useranime));
-  }
-});
+      //Updated listener to only fire when video plays
+      const pattern = new UrlPattern('(http(s)\\://)(:subdomain.):domain.:tld(\\::port)(/:one)(/:two)(/:three)(/:four)(/*)');
+      const urlSplit = pattern.match(tab.url);
+      store.dispatch(searchMAL(urlSplit, useranime));
+    }
+  });
+}, 500);  
