@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addAnimeToMAL, removeAnimeSuggestion, getUserAnime } from '../actions/index';
+import { addAnimeToMAL, removeAnimeSuggestion, specialgetUserAnime } from '../actions/index';
 import noty from 'noty';
 import axios from 'axios';
 
@@ -70,6 +70,12 @@ class SuggestAssist extends Component {
   $.ajax(settings).done((response) => {
       this.setState({ loadbutton: false });
       if (response == "Created") {
+        const request = axios({
+          method: 'get',
+          url: `https://myanimelist.net/malappinfo.php?u=${this.props.loginDetails.username}&status=all&type=anime`
+        }).then((data) => {
+          this.props.specialgetUserAnime(data);
+        });
         this.props.removeAnimeSuggestion(info.id);
         $(`.card${info.id}`).transition('scale');
         noty({
@@ -96,13 +102,70 @@ class SuggestAssist extends Component {
   }
 
   animeRemove(info) {
-    this.props.removeAnimeSuggestion(info.id);
-    $(`.card${data.id}`).transition('scale');
+    $(`.card${info.id}`).transition('scale');
+    setTimeout(() => {
+      this.props.removeAnimeSuggestion(info.id);
+    }, 150);
     return;
   }
 
+  labelRenderHelper(data) {
+    if (data == 'New') {
+      return ("New Series");
+    } else if (data == "Update") {
+      return ("Update");
+    }
+  }
+
+  labelRenderHelperRewatch(data) {
+    console.log(data);
+    if (parseInt(data.watched_ep) == parseInt(data.series_ep)) {
+      return(
+        <a className="ui mini label">Series Completed</a>
+      );
+    }
+  }
+
+  labelRenderHelperRewatchEp(data) {
+    if (data.status == "New") {
+      return (
+        <a className="ui mini label">Add to MAL?</a>
+      );
+    }
+    if (data.series_ep == '?') {
+      return(
+        <a className="ui mini label">Unknown Ep Length</a>
+      );
+    } else {
+      return(
+        <a className="ui mini label">{data.series_ep} Episodes Long</a>
+      );
+    }
+  }
 
   renderSuggestionsMapper(data) {
+    if (data.status == "Rewatching") {
+      return (
+        <div className={`container ui card cardCentering card${data.info.id}`} key={data.info.id}>
+          <div className="content">
+            <img className="right floated mini ui image" src={data.info.image_url}/>
+            <div className="header">{data.info.name}</div>
+            <div className="meta">
+              <a className="ui mini label">Rewatching</a>
+              {this.labelRenderHelperRewatch(data)}
+              {this.labelRenderHelperRewatchEp(data)}
+            </div>
+            <div className="description">You're rewatching episode {data.ep}</div>
+          </div>
+          <div className="extra content">
+            <div className="ui two buttons">
+              <div onClick={() => {this.animeRemove(data.info)}} className="ui basic teal button">Okay, that's cool</div>
+            </div>
+          </div>
+      </div>
+      );
+    }
+
     return(
       <div className={`container ui card cardCentering card${data.info.id}`} key={data.info.id}>
         <div className="content">
@@ -113,16 +176,16 @@ class SuggestAssist extends Component {
               }}>{data.info.name}</div>
           </a>
           <div className="meta">
-            {data.info.payload.status} | <i className="star icon"></i>
-          {data.info.payload.score} -
+            {/* {data.info.payload.status} |  */}
             <a className="ui mini label">
-               Ep Update
-               {/* Ep Update Or New */}
+               {this.labelRenderHelper(data.status)}
             </a>
+            {this.labelRenderHelperRewatchEp(data)}
+            <i className="star icon"></i>{data.info.payload.score}
           </div>
 
           <div className="description">
-            Did you watch Episode: {data.ep}?
+            Did you watch Episode: {data.ep}
           </div>
 
         </div>
@@ -184,7 +247,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators( { addAnimeToMAL, removeAnimeSuggestion } , dispatch);
+  return bindActionCreators( { addAnimeToMAL, removeAnimeSuggestion, specialgetUserAnime } , dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuggestAssist);

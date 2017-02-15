@@ -9,7 +9,38 @@ export default function(state = INITAL_STATE, action) {
 
   switch(action.type[0]) {
     case TAB_SUGGESTION:
+
+      const useranime = action.type[2];
       const animeInfo = animeInfoHelper(action.payload.data);
+      var status = 'New';
+      var series_ep = '?';
+      var my_watched_episodes = '';
+      var i;
+
+
+      for (i = 0; i < useranime.length; i++) {
+        if (animeInfo.id == useranime[i].series_animedb_id) {
+
+          if (parseInt(useranime[i].my_watched_episodes) >= parseInt(action.type[1])) {
+            my_watched_episodes = useranime[i].my_watched_episodes;
+            if (useranime[i].series_episodes != "0") {
+              series_ep = useranime[i].series_episodes;
+            }
+            status = "Rewatching";
+            break;
+          }
+          status = "Update";
+          console.log(useranime[i]);
+          // console.log(useranime[i].series_episodes);
+          if (useranime[i].series_episodes != "0") {
+            series_ep = useranime[i].series_episodes;
+          }
+          my_watched_episodes = useranime[i].my_watched_episodes;
+        }
+      }
+
+      console.log(status);
+
       state.map((value) => {
         if (value.info.id == animeInfo.id) {
           preventAdd = true;
@@ -28,13 +59,12 @@ export default function(state = INITAL_STATE, action) {
         return state;
       }
       console.log("Anime not in state");
-      console.log(state.length);
       if (state.length > 0) {
         chrome.browserAction.setBadgeText({text: `${state.length + 1}`});
       } else {
         chrome.browserAction.setBadgeText({text: "1"});
       }
-      return [ {info: animeInfo, ep: action.type[1]}, ...state ];
+      return [ {info: animeInfo, ep: action.type[1], status: status, series_ep: series_ep, watched_ep: my_watched_episodes}, ...state ];
 
     case REMOVE_ANIME:
       var i;

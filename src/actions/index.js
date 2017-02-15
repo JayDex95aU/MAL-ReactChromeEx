@@ -15,7 +15,8 @@ const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword=
  URL cases handled include:
  - kissanime.ru
 **/
-export function searchMAL(url) {
+export function searchMAL(url, useranime) {
+
   var query = '';
   var episode = '';
   console.log(url);
@@ -28,7 +29,9 @@ export function searchMAL(url) {
       }
       query = url.two;
       try {
-        episode = url._.slice(8, 11).replace(/^0+/, '');
+        var ep = url._;
+        episode = ep.substring(ep.lastIndexOf("-")+1, ep.lastIndexOf("?"));
+        episode = episode.replace(/^0+/, '');
         if (isNaN(episode)) {
           episode = "Film";
         }
@@ -47,8 +50,8 @@ export function searchMAL(url) {
   });
 
   return {
-    type: [ TAB_SUGGESTION, episode ],
-    payload: request
+    type: [ TAB_SUGGESTION, episode, useranime ],
+    payload: request,
   }
 }
 

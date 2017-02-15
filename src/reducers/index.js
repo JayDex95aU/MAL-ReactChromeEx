@@ -33,10 +33,11 @@ chrome.storage.local.get({username_MAL_95au: '', password_MAL_95au: ''}, (detail
 chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
   const url = tab.url;
   if (url !== undefined && changeInfo.audible) {
-      console.log(store.getState());
-      //Updated listener to only fire when video plays
-      const pattern = new UrlPattern('(http(s)\\://)(:subdomain.):domain.:tld(\\::port)(/:one)(/:two)(/:three)(/:four)(/*)');
-      const urlSplit = pattern.match(tab.url);
-      store.dispatch(searchMAL(urlSplit));
+    const useranime = store.getState().useranime.anime;
+
+    //Updated listener to only fire when video plays
+    const pattern = new UrlPattern('(http(s)\\://)(:subdomain.):domain.:tld(\\::port)(/:one)(/:two)(/:three)(/:four)(/*)');
+    const urlSplit = pattern.match(tab.url);
+    store.dispatch(searchMAL(urlSplit, useranime));
   }
 });
