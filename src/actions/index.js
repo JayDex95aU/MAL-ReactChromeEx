@@ -18,7 +18,7 @@ const SEARCH_URL = "https://myanimelist.net/search/prefix.json?type=all&keyword=
  URL cases handled include:
  - kissanime.ru
 **/
-export function searchMAL(url, useranime) {
+export function searchMAL(url, useranime, domData) {
 
   var query = '';
   var episode = '';
@@ -26,6 +26,16 @@ export function searchMAL(url, useranime) {
 
   if (!url) return {type: BAD_ACTION};
   switch(url.domain) {
+
+
+
+    case "9anime":
+      if (url.one != 'watch') {
+        return {type: BAD_ACTION};
+      }
+      query = domData.name;
+      episode = domData.ep.replace(/^0+/, '');
+      break;
     case "kissanime":
       if (url.one != 'Anime') {
         return {type: BAD_ACTION};
