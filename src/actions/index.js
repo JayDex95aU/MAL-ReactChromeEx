@@ -40,7 +40,7 @@ export function searchMAL(url, useranime, domData) {
       if (url.one != 'Anime') {
         return {type: BAD_ACTION};
       }
-      query = url.two;
+      query = domData;
       try {
         var ep = url._;
         episode = ep.substring(ep.lastIndexOf("-")+1, ep.lastIndexOf("?"));

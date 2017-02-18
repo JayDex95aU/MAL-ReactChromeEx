@@ -9,6 +9,8 @@ import LoginReducer from './reducer_login';
 import UserAnimeReducer from './reducer_useranime';
 import { searchMAL, saveDetailToReducer, clearDetailsInReducer, getUserAnime } from '../actions/index';
 import { reducer as formReducer } from 'redux-form'
+import axios from 'axios';
+import stringSimilarity from 'string-similarity';
 
 const rootReducer = combineReducers({
   suggestion: SuggestionsReducer,
@@ -62,10 +64,12 @@ setTimeout(() => {
       const urlSplit = pattern.match(tab.url);
       // Adding super special case for 9anime (And other DOM related pages)
 
+      if (!urlSplit.domain) {
+        return;
+      }
+
       switch(urlSplit.domain) {
         case "9anime":
-          console.log("SPECIAL!!");
-
 
           chrome.tabs.executeScript(tab.id, {
                 code: "document.body.innerHTML"
@@ -74,9 +78,33 @@ setTimeout(() => {
                 var _9animedataName = domData.substring(domData.lastIndexOf("<h1 class=\"title\">")+18).split(/[<]/)[0];
                 var _9animedataEP = domData.substring(domData.lastIndexOf("Episode <span>")+14).split(/[<]/)[0];
                 var processedDomData = {name: _9animedataName, ep: _9animedataEP};
-                store.dispatch(searchMAL(urlSplit, useranime, processedDomData))
+                store.dispatch(searchMAL(urlSplit, useranime, processedDomData));
               });
 
+          return;
+
+        case "kissanime":
+          const animeHome = `http://kissanime.ru/Anime/${urlSplit.two}/`;
+          axios.get(animeHome).then((response) => {
+            const responseData = response.data;
+            const _kissAnimeMain = responseData.substring(responseData.lastIndexOf("Class=\"bigChar\" href=\"")+22);
+            const _kissAnimeMain2 =_kissAnimeMain.substring(_kissAnimeMain.indexOf(">")+1).split(/[<]/)[0].replace("&#39;", "\'");
+
+            var other_kissAnime = responseData.substring(responseData.lastIndexOf("Other name:</span>&nbsp;<a href=\"/Anime/")+40);
+            var other_kissAnime2ndRound = other_kissAnime.substring(other_kissAnime.indexOf("anime online\">")+14).split(/[<]/)[0].replace("&#39;", "\'");
+
+            var ovaBig = other_kissAnime2ndRound.substring(other_kissAnime2ndRound.indexOf("OVA"));
+            var ovaSmall = other_kissAnime2ndRound.substring(other_kissAnime2ndRound.indexOf("ova"));
+
+            var similarity = stringSimilarity.compareTwoStrings(_kissAnimeMain2, other_kissAnime2ndRound);
+
+            if (ovaBig == "OVA" || ovaSmall == "ova" || similarity < 0.25) {
+              console.log(_kissAnimeMain2);
+              store.dispatch(searchMAL(urlSplit, useranime, _kissAnimeMain2));
+            } else {
+              store.dispatch(searchMAL(urlSplit, useranime, other_kissAnime2ndRound));
+            }
+          });
           return;
         default:
           store.dispatch(searchMAL(urlSplit, useranime, domData));

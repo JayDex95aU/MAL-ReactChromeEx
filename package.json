@@ -39,6 +39,7 @@
     "redux-form": "^4.2.2",
     "redux-promise": "^0.5.3",
     "semantic-ui": "^2.2.7",
+    "string-similarity": "^1.1.0",
     "url-pattern": "^1.0.3",
     "x2js": "^3.1.0"
   }
