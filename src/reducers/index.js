@@ -99,7 +99,6 @@ setTimeout(() => {
             var similarity = stringSimilarity.compareTwoStrings(_kissAnimeMain2, other_kissAnime2ndRound);
 
             if (ovaBig == "OVA" || ovaSmall == "ova" || similarity < 0.25) {
-              console.log(_kissAnimeMain2);
               store.dispatch(searchMAL(urlSplit, useranime, _kissAnimeMain2));
             } else {
               store.dispatch(searchMAL(urlSplit, useranime, other_kissAnime2ndRound));
